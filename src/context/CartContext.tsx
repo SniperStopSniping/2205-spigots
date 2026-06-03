@@ -10,7 +10,7 @@ import {
   type ReactNode
 } from "react";
 
-import { getFinishByName, getProductBySlug, type FinishName } from "@/data/products";
+import { getFinishByName, getProductBySlug, getProductImageForFinish, type FinishName } from "@/data/products";
 
 type StoredCartItem = {
   productSlug: string;
@@ -196,7 +196,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         key: makeItemKey(item.productSlug, item.finish),
         productSlug: item.productSlug,
         name: product.name,
-        image: product.image,
+        image: getProductImageForFinish(product, item.finish),
         material: product.material,
         glassThickness: product.glassThickness,
         weightKg: product.weightKg,

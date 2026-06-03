@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 
 import { useCart } from "@/context/CartContext";
-import type { Product } from "@/data/products";
+import { getProductImageForFinish, type Product } from "@/data/products";
 import { formatCad } from "@/lib/format";
 import { QuantityStepper } from "./QuantityStepper";
 
@@ -16,6 +16,7 @@ type ProductCardProps = {
 export function ProductCard({ product }: ProductCardProps) {
   const { addItem, getQuantity, setItemQuantity } = useCart();
   const [selectedFinish, setSelectedFinish] = useState(product.finishes[0]);
+  const cardImage = getProductImageForFinish(product, selectedFinish.name);
 
   const quantity = getQuantity(product.slug, selectedFinish.name);
 
@@ -29,11 +30,11 @@ export function ProductCard({ product }: ProductCardProps) {
       <Link href={`/product/${product.slug}`} className="block overflow-hidden rounded-xl">
         <div className="h-32 bg-gradient-to-b from-neutral-50 to-white md:h-44">
           <Image
-            src={product.image}
+            src={cardImage}
             alt={product.name}
             width={900}
             height={900}
-            className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.02]"
+            className="h-full w-full object-contain p-2 transition duration-300 group-hover:scale-[1.02]"
             loading="lazy"
           />
         </div>

@@ -1,4 +1,10 @@
-import { getFinishByName, normalizeFinishName, type FinishName, type Product } from "@/data/products";
+import {
+  getFinishByName,
+  getProductImagesForFinish,
+  normalizeFinishName,
+  type FinishName,
+  type Product
+} from "@/data/products";
 
 const FALLBACK_SITE_URL = "https://2205spigots.ca";
 
@@ -25,13 +31,14 @@ export const toAbsoluteUrl = (path: string): string => {
 
 export const buildProductJsonLd = (product: Product, finish: FinishName, canonicalPath: string) => {
   const selectedFinish = getFinishByName(product, finish) ?? product.finishes[0];
+  const images = getProductImagesForFinish(product, selectedFinish.name).map(toAbsoluteUrl);
 
   return {
     "@context": "https://schema.org",
     "@type": "Product",
     name: product.titleByFinish[selectedFinish.name],
     description: product.metaDescriptionByFinish[selectedFinish.name],
-    image: [toAbsoluteUrl(product.image)],
+    image: images,
     material: product.material === "SS2205" ? "Duplex 2205 Stainless Steel" : "SS316 Stainless Steel",
     weight: `${product.weightKg}kg`,
     offers: {

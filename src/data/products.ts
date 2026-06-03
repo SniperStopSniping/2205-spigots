@@ -16,13 +16,16 @@ export type ProductFaq = {
   answer: string;
 };
 
+export type ProductImagesByFinish = Partial<Record<FinishName, string[]>>;
+
 export type Product = {
   name: string;
   slug: string;
   material: "SS2205" | "SS316";
   glassThickness: "10-12mm";
   weightKg: number;
-  image: string;
+  mainImage: string;
+  imagesByFinish: ProductImagesByFinish;
   finishes: [ProductFinish, ProductFinish];
   shortDescription: string;
   descriptionBase: string;
@@ -35,6 +38,8 @@ export type Product = {
   faq: ProductFaq[];
 };
 
+export const PRODUCT_IMAGE_FALLBACK = "/images/product-placeholder.svg";
+
 export const PRODUCTS: Product[] = [
   {
     name: "2205 Adjustable Base Spigot",
@@ -42,7 +47,19 @@ export const PRODUCTS: Product[] = [
     material: "SS2205",
     glassThickness: "10-12mm",
     weightKg: 2.03,
-    image: "/images/product-placeholder.svg",
+    mainImage: "/images/2205 Spigot Silver 1.PNG",
+    imagesByFinish: {
+      Satin: [
+        "/images/2205 Spigot Silver 1.PNG",
+        "/images/2205 Spigot Silver 2.PNG",
+        "/images/2205 Spigot Silver 3.PNG"
+      ],
+      "Matte Black": [
+        "/images/2205 Spigot Black 1.PNG",
+        "/images/2205 Spigot Black 2.PNG",
+        "/images/2205 Spigot Black 3.PNG"
+      ]
+    },
     finishes: [
       { name: "Satin", priceCents: 3699, priceId: "price_spigot_satin_3699" },
       { name: "Matte Black", priceCents: 3999, priceId: "price_spigot_black_3999" }
@@ -110,7 +127,14 @@ export const PRODUCTS: Product[] = [
     material: "SS2205",
     glassThickness: "10-12mm",
     weightKg: 0.46,
-    image: "/images/product-placeholder.svg",
+    mainImage: "/images/Adjustable glass to glass connector 1.PNG",
+    imagesByFinish: {
+      Satin: [
+        "/images/Adjustable glass to glass connector 1.PNG",
+        "/images/Adjustable glass to glass connector 2.PNG",
+        "/images/Adjustable glass to glass connector 3.PNG"
+      ]
+    },
     finishes: [
       { name: "Satin", priceCents: 1499, priceId: "price_angle_satin_1499" },
       { name: "Matte Black", priceCents: 1799, priceId: "price_angle_black_1799" }
@@ -176,7 +200,15 @@ export const PRODUCTS: Product[] = [
     material: "SS2205",
     glassThickness: "10-12mm",
     weightKg: 0.33,
-    image: "/images/product-placeholder.svg",
+    mainImage: "/images/180 glass to glass connector 1.PNG",
+    imagesByFinish: {
+      Satin: [
+        "/images/180 glass to glass connector 1.PNG",
+        "/images/180 glass to glass connector 2.PNG",
+        "/images/180 glass to glass connector 3.PNG",
+        "/images/180 glass to glass connector 4.PNG"
+      ]
+    },
     finishes: [
       { name: "Satin", priceCents: 1199, priceId: "price_180_satin_1199" },
       { name: "Matte Black", priceCents: 1499, priceId: "price_180_black_1499" }
@@ -241,7 +273,14 @@ export const PRODUCTS: Product[] = [
     material: "SS2205",
     glassThickness: "10-12mm",
     weightKg: 0.31,
-    image: "/images/product-placeholder.svg",
+    mainImage: "/images/90 glass to glass.PNG",
+    imagesByFinish: {
+      Satin: [
+        "/images/90 glass to glass.PNG",
+        "/images/90 glass to glass 1.PNG",
+        "/images/90 glass to glass 2.PNG"
+      ]
+    },
     finishes: [
       { name: "Satin", priceCents: 1199, priceId: "price_90_satin_1199" },
       { name: "Matte Black", priceCents: 1399, priceId: "price_90_black_1399" }
@@ -306,7 +345,14 @@ export const PRODUCTS: Product[] = [
     material: "SS2205",
     glassThickness: "10-12mm",
     weightKg: 0.22,
-    image: "/images/product-placeholder.svg",
+    mainImage: "/images/90 glass to wall connector.PNG",
+    imagesByFinish: {
+      Satin: [
+        "/images/90 glass to wall connector.PNG",
+        "/images/90 glass to wall connector 1.PNG",
+        "/images/90 glass to wall connector 2.PNG"
+      ]
+    },
     finishes: [
       { name: "Satin", priceCents: 999, priceId: "price_wall_satin_999" },
       { name: "Matte Black", priceCents: 1099, priceId: "price_wall_black_1099" }
@@ -371,7 +417,8 @@ export const PRODUCTS: Product[] = [
     material: "SS316",
     glassThickness: "10-12mm",
     weightKg: 1.26,
-    image: "/images/product-placeholder.svg",
+    mainImage: PRODUCT_IMAGE_FALLBACK,
+    imagesByFinish: {},
     finishes: [
       { name: "Satin", priceCents: 4899, priceId: "price_hinge_satin_4899" },
       { name: "Matte Black", priceCents: 5499, priceId: "price_hinge_black_5499" }
@@ -437,7 +484,14 @@ export const PRODUCTS: Product[] = [
     material: "SS2205",
     glassThickness: "10-12mm",
     weightKg: 0.85,
-    image: "/images/product-placeholder.svg",
+    mainImage: "/images/Glass to glass gate lock 1.PNG",
+    imagesByFinish: {
+      Satin: [
+        "/images/Glass to glass gate lock 1.PNG",
+        "/images/Glass to glass gate lock 2.PNG",
+        "/images/Glass to glass gate lock 3.PNG"
+      ]
+    },
     finishes: [
       { name: "Satin", priceCents: 3999, priceId: "price_lock_satin_3999" },
       { name: "Matte Black", priceCents: 4299, priceId: "price_lock_black_4299" }
@@ -532,6 +586,27 @@ export const getProductBySlug = (slug: string): Product | undefined => PRODUCTS_
 
 export const getFinishByName = (product: Product, finishName: FinishName): ProductFinish | undefined =>
   product.finishes.find((finish) => finish.name === finishName);
+
+const hasImages = (images: string[] | undefined): images is string[] => Array.isArray(images) && images.length > 0;
+
+export const getProductImagesForFinish = (product: Product, finishName: FinishName): string[] => {
+  const selectedFinishImages = product.imagesByFinish[finishName];
+  if (hasImages(selectedFinishImages)) {
+    return selectedFinishImages;
+  }
+
+  const satinImages = product.imagesByFinish.Satin;
+  if (hasImages(satinImages)) {
+    return satinImages;
+  }
+
+  return [product.mainImage || PRODUCT_IMAGE_FALLBACK];
+};
+
+export const getProductMainImage = (product: Product): string => getProductImagesForFinish(product, "Satin")[0];
+
+export const getProductImageForFinish = (product: Product, finishName: FinishName): string =>
+  getProductImagesForFinish(product, finishName)[0];
 
 export const isFinishName = (value: string | null | undefined): value is FinishName =>
   value === "Satin" || value === "Matte Black";
